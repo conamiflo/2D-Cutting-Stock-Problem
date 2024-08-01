@@ -47,4 +47,3 @@ The program stops generating when the free surface is less than 5% of the total 
 
 ---
 
-Feel free to check out the code and provide any feedback or suggestions for improvements!
