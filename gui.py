@@ -3,14 +3,12 @@ from tkinter import ttk
 from tkinter import font
 from tkinter import messagebox
 
-
 class InputForm(tk.Tk):
 
     def __init__(self):
-
-        self.isecci = []
-        self.sirina_materijala = 0
-        self.visina_materijala = 0
+        self.slices = []
+        self.material_width = 0
+        self.material_height = 0
 
         super().__init__()
 
@@ -35,10 +33,10 @@ class InputForm(tk.Tk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        label_1 = tk.Label(self, text="Sirina isecka:", font=label_font)
-        label_2 = tk.Label(self, text="Visina isecka:", font=label_font)
-        label_3 = tk.Label(self, text="Sirina pravougaonika:", font=label_font)
-        label_4 = tk.Label(self, text="Visina pravougaonika:", font=label_font)
+        label_1 = tk.Label(self, text="Slice Width:", font=label_font)
+        label_2 = tk.Label(self, text="Slice Height:", font=label_font)
+        label_3 = tk.Label(self, text="Rectangle Width:", font=label_font)
+        label_4 = tk.Label(self, text="Rectangle Height:", font=label_font)
 
         vcmd = (self.register(self.validate), '%P')
         self.input_1 = tk.Entry(self, validate="key", validatecommand=vcmd)
@@ -63,19 +61,19 @@ class InputForm(tk.Tk):
         label_4.place(x=20, y=310)
         self.input_4.place(x=20, y=340, width=170, height=25)
 
-        self.tree = ttk.Treeview(self, columns=("Sirina isecka", "Visina isecka"), show="headings")
-        self.tree.column("Sirina isecka", width=100, anchor='center')
-        self.tree.heading("Sirina isecka", text="Sirina isecka")
-        self.tree.column("Visina isecka", width=100, anchor='center')
-        self.tree.heading("Visina isecka", text="Visina isecka")
+        self.tree = ttk.Treeview(self, columns=("Slice Width", "Slice Height"), show="headings")
+        self.tree.column("Slice Width", width=100, anchor='center')
+        self.tree.heading("Slice Width", text="Slice Width")
+        self.tree.column("Slice Height", width=100, anchor='center')
+        self.tree.heading("Slice Height", text="Slice Height")
         self.tree.place(x=20, y=20, width=200, height=200)
 
         myfont = tk.font.Font(family='Arial', size=10, weight='bold')
 
-        self.button1 = tk.Button(self, text="Dodaj isecak", font=myfont, command=self.dodaj_u_tabelu)
+        self.button1 = tk.Button(self, text="Add Slice", font=myfont, command=self.add_to_table)
         self.button1.place(x=250, y=150, width=130, height=35)
 
-        self.button2 = tk.Button(self, text="Pokreni program", font=myfont, command=self.pokreni_program)
+        self.button2 = tk.Button(self, text="Start Program", font=myfont, command=self.start_program)
         self.button2.place(x=20, y=380, width=130, height=35)
 
     def validate(self, P):
@@ -85,30 +83,30 @@ class InputForm(tk.Tk):
             self.bell()
             return False
 
-    def dodaj_u_tabelu(self):
-        sirina_isecka = self.input_1.get()
-        visina_isecka = self.input_2.get()
+    def add_to_table(self):
+        slice_width = self.input_1.get()
+        slice_height = self.input_2.get()
 
-        if sirina_isecka.isdigit() and visina_isecka.isdigit():
-            self.tree.insert("", "end", values=(sirina_isecka, visina_isecka))
-            self.isecci.append([sirina_isecka, visina_isecka])
+        if slice_width.isdigit() and slice_height.isdigit():
+            self.tree.insert("", "end", values=(slice_width, slice_height))
+            self.slices.append([slice_width, slice_height])
             self.input_1.delete(0, 'end')
             self.input_2.delete(0, 'end')
         else:
-            messagebox.showerror("Greska", "Mozete da unesete samo brojeve!")
+            messagebox.showerror("Error", "You can only enter numbers!")
             self.input_1.delete(0, 'end')
             self.input_2.delete(0, 'end')
 
-    def pokreni_program(self):
-        sirina_materijala = self.input_3.get()
-        visina_materijala = self.input_4.get()
+    def start_program(self):
+        material_width = self.input_3.get()
+        material_height = self.input_4.get()
 
-        if sirina_materijala.isdigit() and visina_materijala.isdigit() and len(self.isecci) != 0:
-            self.sirina_materijala = sirina_materijala
-            self.visina_materijala = visina_materijala
+        if material_width.isdigit() and material_height.isdigit() and len(self.slices) != 0:
+            self.material_width = material_width
+            self.material_height = material_height
             self.destroy()
         else:
-            messagebox.showerror("Greska", "Mozete da unesete samo brojeve!")
+            messagebox.showerror("Error", "You can only enter numbers!")
             self.input_1.delete(0, 'end')
             self.input_2.delete(0, 'end')
 
@@ -117,6 +115,6 @@ if __name__ == "__main__":
     form = InputForm()
     form.mainloop()
 
-    print(form.isecci)
-    print(form.sirina_materijala)
-    print(form.visina_materijala)
+    print(form.slices)
+    print(form.material_width)
+    print(form.material_height)
